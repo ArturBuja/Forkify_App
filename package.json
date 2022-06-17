@@ -1,0 +1,25 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Aplkiacja na przepisy",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArturBuja/Forkify_App.git"
+  },
+  "author": "Artur Buja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArturBuja/Forkify_App/issues"
+  },
+  "homepage": "https://github.com/ArturBuja/Forkify_App#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.6.0",
+    "parcel": "^2.6.0",
+    "sass": "^1.26.10"
+  }
+}
