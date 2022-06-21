@@ -9,14 +9,6 @@ if (module.hot) {
 }
 const recipeContainer = document.querySelector('.recipe');
 
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
-
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
@@ -34,10 +26,11 @@ const controlRecipes = async function (e) {
     // 2) Rendering recipe
     recipieView.render(model.state.recipe);
   } catch (err) {
-    console.log(err);
+    recipieView.renderError();
   }
 };
 
-['hashchange', 'load'].forEach(event =>
-  window.addEventListener(event, controlRecipes)
-);
+const init = function () {
+  recipieView.addHandlerRender(controlRecipes);
+};
+init();
