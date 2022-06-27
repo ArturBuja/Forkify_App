@@ -1,5 +1,6 @@
 import * as model from './model.js';
 import recipieView from './views/recipieView.js';
+import searchView from './views/searchView.js';
 
 //scripts
 import 'core-js/stable';
@@ -30,7 +31,24 @@ const controlRecipes = async function (e) {
   }
 };
 
+const controlSearchResults = async function () {
+  try {
+    // 1) Get seatch quert
+    const query = searchView.getQuery();
+    if (!query) return;
+
+    //2) Load seartch result
+    await model.loadSearchResults(query);
+
+    // 3) render results
+    console.log(model.state.search.results);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const init = function () {
   recipieView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 init();
