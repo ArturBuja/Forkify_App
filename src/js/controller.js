@@ -1,6 +1,7 @@
 import * as model from './model.js';
 import recipieView from './views/recipieView.js';
 import searchView from './views/searchView.js';
+import resultsView from './views/resultsView';
 
 //scripts
 import 'core-js/stable';
@@ -33,6 +34,8 @@ const controlRecipes = async function (e) {
 
 const controlSearchResults = async function () {
   try {
+    resultsView.renderSpinner();
+
     // 1) Get seatch quert
     const query = searchView.getQuery();
     if (!query) return;
@@ -42,6 +45,7 @@ const controlSearchResults = async function () {
 
     // 3) render results
     console.log(model.state.search.results);
+    resultsView.render(model.state.search.results);
   } catch (err) {
     console.log(err);
   }
