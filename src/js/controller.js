@@ -2,6 +2,7 @@ import * as model from './model.js';
 import recipieView from './views/recipieView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView';
+import bookmarksView from './views/bookmarksView.js';
 import paginationView from './views/paginationView.js';
 
 //scripts
@@ -20,6 +21,7 @@ const controlRecipes = async function (e) {
 
     // 0) Update results view to mark selected search result
     resultsView.update(model.getSearchResultsPage());
+    bookmarksView.update(model.state.bookmarks);
 
     // 1) Loading recipe
     await model.loadRecpie(id);
@@ -73,9 +75,21 @@ const controlServings = newServings => {
   recipieView.update(model.state.recipe);
 };
 
+const controlAddBookmark = () => {
+  // Add/remoce the bookmar
+  if (!model.state.recipe.bookmarks) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+  // Update recpie view
+  recipieView.update(model.state.recipe);
+  // Render bookmarsks
+
+  bookmarksView.render(model.state.bookmarks);
+};
+
 const init = function () {
   recipieView.addHandlerRender(controlRecipes);
   recipieView.addHandlerUpdateServings(controlServings);
+  recipieView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
