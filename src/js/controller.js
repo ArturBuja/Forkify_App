@@ -1,13 +1,16 @@
 import * as model from './model.js';
+import { MODAL_CLOSE_SEC } from './config';
 import recipieView from './views/recipieView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView';
 import bookmarksView from './views/bookmarksView.js';
 import paginationView from './views/paginationView.js';
+import addRecipieView from './views/addRecipieView.js';
 
 //scripts
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import { MODAL_CLOSE_SEC } from './config.js';
 // if (module.hot) {
 //   module.hot.accept();
 // }
@@ -92,6 +95,35 @@ const controlBookmarks = () => {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const controlAddRecipie = async newRecipie => {
+  try {
+    addRecipieView.renderSpinner();
+
+    await model.uploadRecipe(newRecipie);
+    console.log(model.state.recipe);
+
+    recipieView.render(model.state.recipe);
+
+    // succes message
+    addRecipieView.renderMessage();
+
+    //render bookmark bview
+    bookmarksView.render(model.state.bookmarks);
+
+    //change id in url
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+    // window.history.back();
+
+    // close modal window
+    setTimeout(() => {
+      addRecipieView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (err) {
+    console.error(err);
+    addRecipieView.renderError(err.message);
+  }
+};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipieView.addHandlerRender(controlRecipes);
@@ -99,5 +131,6 @@ const init = function () {
   recipieView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipieView.addHandlerUpload(controlAddRecipie);
 };
 init();
